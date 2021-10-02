@@ -1,0 +1,29 @@
+version: '3.2'
+
+services:
+  python:
+    image: pythonapi
+    restart: always
+    build:
+      context: ./
+    container_name: pythonapi
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/application
+    command: ['python', 'api.py']
+    networks:
+      - app-network
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '10m'
+    environment:
+      - ENV=dev
+    env_file:
+      - dev.env
+
+networks:
+  app-network:
+    driver: bridge
